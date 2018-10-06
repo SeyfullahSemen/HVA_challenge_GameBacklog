@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements GameAdapter.Remin
                         //Get the index corresponding to the selected position
                         int position = (viewHolder.getAdapterPosition());
                         new GameAsyncTask(TASK_DELETE_REMINDER).execute(mGames.get(position));
-                        mAdapter.notifyItemRemoved(position);
+                        mAdapter.notifyItemRemoved(position); // Check the position
                     }
 
 
