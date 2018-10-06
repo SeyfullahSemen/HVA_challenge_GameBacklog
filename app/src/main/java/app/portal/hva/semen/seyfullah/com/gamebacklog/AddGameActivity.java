@@ -36,6 +36,7 @@ public class AddGameActivity extends AppCompatActivity {
     Spinner mStatusSpinner;
 
     public final static int TASK_INSERT_REMINDER = 0;
+    public final static int TASK_UPDATE_REMINDER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +61,6 @@ public class AddGameActivity extends AppCompatActivity {
                 Log.i(TAG, "Status check: " + mSelectedStatus);
                 new GamesAsyncTask(TASK_INSERT_REMINDER).execute(new Games(mGameTitle.getText().toString(), mGamePlatform.getText().toString(), mGameNotes.getText().toString(), mStatusSpinner.getSelectedItem().toString()));
 
-                Intent resultIntent = new Intent();
-                setResult(Activity.RESULT_OK, resultIntent);
                 finish();
 
                 Log.i(TAG, "onClick: Inserted ");
@@ -84,6 +83,8 @@ public class AddGameActivity extends AppCompatActivity {
                 case TASK_INSERT_REMINDER:
                     db.reminderDao().insertGame(games[0]);
                     break;
+                case TASK_UPDATE_REMINDER:
+                    db.reminderDao().updateGame(games[0]);
 
             }
             //To return a new list with the updated data, we get all the data from the database again.
@@ -98,5 +99,7 @@ public class AddGameActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 }

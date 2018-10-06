@@ -20,10 +20,16 @@ import app.portal.hva.semen.seyfullah.com.gamebacklog.R;
 public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> {
     private List<Games> mGames;
     private Context mContext;
+    final private ReminderClickListener mReminderClickListener;
 
-    public GameAdapter(Context mContext, List<Games> mGames) {
+    public GameAdapter(Context mContext, List<Games> mGames, ReminderClickListener mReminderClickListener) {
         this.mGames = mGames;
         this.mContext = mContext;
+        this.mReminderClickListener = mReminderClickListener;
+    }
+
+    public interface ReminderClickListener {
+        void reminderOnClick(int i);
     }
 
     @NonNull
@@ -59,7 +65,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> {
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mGameName;
         public TextView mConsoleName;
         public TextView mGameStatus;
@@ -71,6 +77,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder> {
             mConsoleName = itemView.findViewById(R.id.console_type);
             mGameStatus = itemView.findViewById(R.id.game_status);
             mDate = itemView.findViewById(R.id.date);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = getAdapterPosition();
+            mReminderClickListener.reminderOnClick(clickedPosition);
         }
     }
 }

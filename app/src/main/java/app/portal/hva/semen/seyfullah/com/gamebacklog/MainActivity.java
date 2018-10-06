@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GameAdapter.ReminderClickListener {
 
     private List<Games> mGames = new ArrayList<>();
     static AppDatabase db;
@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private GameAdapter mAdapter;
 
     static final int REQUEST_CODE = 1234;
+    public static final String EXTRA_GAME = "Games";
+    private int mModifyPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mGameList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mGameList.setHasFixedSize(true);
 
+        updateUI();
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -92,12 +95,22 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI() {
 //        mGames = db.reminderDao().getAllGames();
         if (mAdapter == null) {
-            mAdapter = new GameAdapter(this, mGames);
+            mAdapter = new GameAdapter(this, mGames, this);
             mGameList.setAdapter(mAdapter);
         } else {
             mAdapter.swapList(mGames);
         }
 
+    }
+
+    @Override
+    public void reminderOnClick(int i) {
+        Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
+        mModifyPosition = i;
+
+        intent.putExtra(EXTRA_GAME,mGames.get(i));
+
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public class GameAsyncTask extends AsyncTask<Games, Void, List> {
@@ -131,6 +144,21 @@ public class MainActivity extends AppCompatActivity {
             onReminderDbUpdated(list);
         }
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                Games updatedGame = data.getParcelableExtra(MainActivity.EXTRA_GAME);
+                new MainActivity.GameAsyncTask(TASK_UPDATE_REMINDER).execute(updatedGame);
+                updateUI();
+
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 

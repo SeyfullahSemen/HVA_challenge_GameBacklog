@@ -2,6 +2,7 @@ package app.portal.hva.semen.seyfullah.com.gamebacklog.Classes;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,6 +31,7 @@ public class Games implements Parcelable {
         this.mStatus = mStatus;
     }
 
+
     public Long getId() {
         return id;
     }
@@ -52,6 +54,22 @@ public class Games implements Parcelable {
 
     public void setmStatus(String mStatus) {
         this.mStatus = mStatus;
+    }
+
+    public String getPlatformTitle() {
+        return mPlatformTitle;
+    }
+
+    public String getNote() {
+        return mNote;
+    }
+
+    public void setNote(String mNote) {
+        this.mNote = mNote;
+    }
+
+    public void setmPlatformTitle(String mPlatformTitle) {
+        this.mPlatformTitle = mPlatformTitle;
     }
 
     @Override
