@@ -58,9 +58,11 @@ public class AddGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.i(TAG, "Status check: " + mSelectedStatus);
-                new GamesAsyncTask(TASK_INSERT_REMINDER).execute(new Games(mGameTitle.getText().toString(), mGamePlatform.getText().toString(), mGameNotes.getText().toString(), mStatusSpinner.getSelectedItem().toString()));
-
+//                Log.i(TAG, "Status check: " + mSelectedStatus);
+//                new GamesAsyncTask(TASK_INSERT_REMINDER).execute(new Games(mGameTitle.getText().toString(), mGamePlatform.getText().toString(), mGameNotes.getText().toString(), mStatusSpinner.getSelectedItem().toString()));
+                Intent data = new Intent(AddGameActivity.this, MainActivity.class);
+                data.putExtra("game", new Games(mGameTitle.getText().toString(), mGamePlatform.getText().toString(), mGameNotes.getText().toString(), mStatusSpinner.getSelectedItem().toString()));
+                setResult(Activity.RESULT_OK, data);
                 finish();
 
                 Log.i(TAG, "onClick: Inserted ");

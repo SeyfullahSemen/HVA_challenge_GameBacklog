@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements GameAdapter.Remin
 
     @OnClick(R.id.add_game_floating_button)
     public void goToAddPage() {
-        startActivityForResult(new Intent(MainActivity.this, AddGameActivity.class), REQUEST_CODE);
+        startActivityForResult(new Intent(MainActivity.this, AddGameActivity.class), 12345);
 
     }
 
@@ -149,7 +149,14 @@ public class MainActivity extends AppCompatActivity implements GameAdapter.Remin
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == 12345) {
+            if (resultCode == RESULT_OK) {
+                Games addedGame = data.getParcelableExtra("game");
+                new GameAsyncTask(TASK_INSERT_REMINDER).execute(addedGame);
+                updateUI();
+            }
+        }
+        else if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
                 Games updatedGame = data.getParcelableExtra(MainActivity.EXTRA_GAME);
