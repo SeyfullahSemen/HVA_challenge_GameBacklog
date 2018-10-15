@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements GameAdapter.Remin
         Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
         mModifyPosition = i;
 
-        intent.putExtra(EXTRA_GAME,mGames.get(i));
+        intent.putExtra(EXTRA_GAME, mGames.get(i));
 
         startActivityForResult(intent, REQUEST_CODE);
     }
@@ -155,8 +155,7 @@ public class MainActivity extends AppCompatActivity implements GameAdapter.Remin
                 new GameAsyncTask(TASK_INSERT_REMINDER).execute(addedGame);
                 updateUI();
             }
-        }
-        else if (requestCode == REQUEST_CODE) {
+        } else if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
                 Games updatedGame = data.getParcelableExtra(MainActivity.EXTRA_GAME);
